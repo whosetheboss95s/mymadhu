@@ -3,17 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Text Animation</title>
+  <style>
+    /* Please change your favorite font-size! */
+    body {
+      background: rgba(20, 5, 5, 1);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      perspective: 800px;
+    }
+
+    div {
+      transform-style: preserve-3d;
+    }
+
+    #ui {
+      font-size: 1.5rem;
+
+      .text {
+        position: absolute;
+        line-height: 1.5rem;
+        opacity: 0;
+        font-family: 'Anton', sans-serif;
+        transform: translate(-50%, -50%);
+        mix-blend-mode: screen;
+      }
+
+      @for $i from 0 through 100 {
+        $key: $i + 1;
+        .text:nth-child(#{$key}) {
+          $row: floor($i / 20);
+          color: rgba(255 - $key * 2, 50 - $key / 2, $key * 3, 1);
+          clip-path: polygon(
+            floor($i / 2) * 10% - $row * 100% $row * 50%,
+            floor($key / 2) * 10% - $row * 100% ceil($key % 2) * 50% + ($row * 50%),
+            ceil($key / 2) * 10% - $row * 100% ($row + 1) * 50%
+          );
+          transform-origin: random(100) - 50 + floor($i / 2) * 10% - $row * 100% random(100) - 50 + $row * 50%;
+          animation: fly#{$key} 10000ms $i * 40ms cubic-bezier(0.360, 0.100, 0.160, 1.000) infinite alternate;
+
+          @keyframes fly#{$key} {
+            $initX: random(1000) - 500;
+            $initY: random(1000) - 500;
+            $initZ: random(1000) - 500;
+            $initDepth: random(3000) - 2500;
+            0% {
+              opacity: 0;
+              transform: translate(-50%, -50%) rotateX(#{$initX}deg) rotateY(#{$initY}deg) rotateZ(#{$initZ}deg) translateZ(#{$initDepth}px);
+            }
+            10% {
+              opacity: 0;
+              transform: translate(-50%, -50%) rotateX(#{$initX}deg) rotateY(#{$initY}deg) rotateZ(#{$initZ}deg) translateZ(#{$initDepth}px);
+            }
+            90% {
+              opacity: 1;
+              transform: translate(-50%, -50%) rotate(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0px);
+            }
+            100% {
+              opacity: 1;
+              transform: translate(-50%, -50%) rotate(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0px);
+            }
+          }
+        }
+      }
+    }
+
+    /* Media Query for Mobile */
+    @media screen and (max-width: 768px) {
+      #ui .text {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="ui">
     <!-- Please typing your favorite word! -->
-    <?php $text = "Hello my dearest Madhu,\n\nI want you to know that I am always by your side, supporting you in every step of your journey, and I love you."; ?>
-
-    <?php for ($i = 0; $i < 40; $i++): ?>
-      <div class="text"><?php echo $text; ?></div>
-    <?php endfor; ?>
+    <div class="text">
+      Hello my dearest Madhu,
+      <br/><br/>
+      I want you to know that I am always by your side, supporting you in every step of your journey, and I love you.
+    </div>
+    <!-- Repeat for 39 more times -->
   </div>
 </body>
 </html>
