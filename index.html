@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Text Animation</title>
+</head>
+<body>
+  <div id="ui">
+    <!-- Please typing your favorite word! -->
+    <?php $text = "Hello my dearest Madhu,\n\nI want you to know that I am always by your side, supporting you in every step of your journey, and I love you."; ?>
+
+    <?php for ($i = 0; $i < 40; $i++): ?>
+      <div class="text"><?php echo $text; ?></div>
+    <?php endfor; ?>
+  </div>
+</body>
+</html>
