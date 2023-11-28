@@ -4,70 +4,236 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* Please change your favorite font-size! */
     body {
-      background: rgba(20, 5, 5, 1);
-      height: 100vh;
-      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #fff;
-      perspective: 800px;
+      height: 100vh;
+      background: linear-gradient(45deg, #fe3a7d, #ff7b0a);
+      font-family: 'Josefin Sans';
+      overflow: hidden;
+      max-width: 100vw;
+      max-height: 100vh;
+      margin: 0;
+    }
+
+    body:before {
+      content: 'Click';
+      position: absolute;
+      color: #999;
+      font-size: 24px;
+      z-index: 999;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    * {
+      transition: all 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    input {
+      opacity: 0;
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      cursor: pointer;
+    }
+
+    input:checked ~ div {
+      transition: all 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      padding-right: 20px;
+    }
+
+    input:checked ~ div:before {
+      transform: scale(1);
+      transition-delay: 0.2s;
+    }
+
+    input:checked ~ div h1:before {
+      transform: scaleY(1);
+      transition-delay: 0.4s;
+    }
+
+    input:checked ~ div h1:after {
+      box-shadow: 0 40px 0 1px #222, 0 36px 0 0px #fe3a7d;
+      transform: scaleY(1) rotate(5deg);
+      transition-delay: 0.5s;
+    }
+
+    input:checked ~ div *:before,
+    input:checked ~ div *:after {
+      background: #fe3a7d;
+    }
+
+    input:checked ~ div span:last-of-type {
+      color: #fe3a7d;
+      transition-delay: 0.25s;
+    }
+
+    input:checked ~ div span:nth-of-type(2) {
+      transform: translateX(-2.5px) scaleY(1);
+      width: 30px;
+      margin: 0 5px;
+    }
+
+    input:checked ~ div span:nth-of-type(2):before {
+      box-shadow: 0 32px 0 0 #fe3a7d;
+      transform: scaleX(1);
+      transition-delay: 0.2s;
+    }
+
+    input:checked ~ div span:nth-of-type(2):after {
+      transform: scaleX(1);
+      transition-delay: 0.4s;
+    }
+
+    input:checked ~ div span:first-of-type {
+      transform: translateY(-2px) translateX(-2.5px);
+    }
+
+    input:checked ~ div span:first-of-type:before {
+      transform: translateX(0);
+    }
+
+    input:checked ~ div span:first-of-type b:before,
+    input:checked ~ div span:first-of-type b:after {
+      transition-delay: 0.175s;
+    }
+
+    input:checked ~ div span:first-of-type b:before {
+      transform: rotate(30deg) scaleY(1);
+      transition-delay: 0.25s;
+    }
+
+    input:checked ~ div span:first-of-type b:after {
+      transform: rotate(-30deg) scaleY(1);
+    }
+
+    input:checked ~ div span:nth-of-type(2):nth-last-of-type(2) {
+      width: 30px;
+    }
+
+    input:checked ~ div span:nth-of-type(2):nth-last-of-type(2):before {
+      transform: translateX(0);
+    }
+
+    input:checked ~ div span:nth-of-type(2):nth-last-of-type(2):before,
+    input:checked ~ div span:nth-of-type(2):nth-last-of-type(2):after {
+      transform: scaleX(1);
+      transition-delay: 0.2s;
+    }
+
+    input:checked ~ div span:nth-of-type(2):nth-last-of-type(2):after {
+      transition-delay: 0.4s;
+    }
+
+    input:checked ~ div span:last-of-type {
+      transform: translateY(-2px) translateX(2.5px);
+      transition-delay: 0.15s;
     }
 
     div {
-      transform-style: preserve-3d;
+      position: relative;
+      display: inline-block;
+      padding-right: 0px;
+      min-width: 215px;
     }
 
-    #ui {
-      font-size: 1.5rem;
-    }
-
-    .text {
+    div:before {
+      content: '';
       position: absolute;
-      line-height: 1.5rem;
-      opacity: 0;
-      font-family: 'Anton', sans-serif;
-      transform: translate(-50%, -50%);
-      mix-blend-mode: screen;
-      animation: fly 10000ms cubic-bezier(0.360, 0.100, 0.160, 1.000) infinite alternate;
+      width: 300px;
+      height: 300px;
+      background: #222;
+      border-radius: 100%;
+      transition: all 500ms cubic-bezier(1, 0.885, 0.32, 1);
+      transform: scale(3);
+      left: calc(50% - 150px);
+      top: calc(50% - 150px);
     }
 
-    @keyframes fly {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0px);
+    div h1 {
+      margin: 0px;
+      color: #fff;
+      font-weight: 100;
+      font-size: 40px;
+      position: relative;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.3s ease-out;
+    }
+
+    div h1.active {
+      max-height: 300px;
+      transition: max-height 0.5s ease-in;
+    }
+
+    div h1:after {
+      width: 2px;
+      height: 30px;
+      top: 5px;
+      background: linear-gradient(to bottom, #ff7b0a, #fe3a7d);
+      right: -10px;
+      display: inline-block;
+      transform: scaleY(0) rotate(5deg);
+      box-shadow: 0 40px 0 -3px #222, 0 36px 0 -3px #fe3a7d;
+      transform-origin: bottom;
+      transition: none;
+    }
+
+    div h1:before {
+      width: 68.75px;
+      height: 2px;
+      background: linear-gradient(to right, #ff7b0a, #fe3a7d);
+      bottom: 7.5px;
+      right: 0px;
+      transform-origin: right;
+      transform: scaleX(0);
+      transition: none;
+    }
+
+    @media only screen and (max-width: 600px) {
+      div:before {
+        width: 200px;
+        height: 200px;
+        transform: scale(2);
+        left: calc(50% - 100px);
+        top: calc(50% - 100px);
       }
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%) rotate(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0px);
+
+      div h1 {
+        font-size: 20px;
+      }
+
+      div h1:after {
+        width: 1px;
+        height: 15px;
+        top: 2.5px;
+        right: -5px;
+      }
+
+      div h1:before {
+        width: 34.375px;
+        height: 1px;
+        bottom: 3.75px;
       }
     }
   </style>
 </head>
 <body>
-  <div id="ui">
-    <!-- Please typing your favorite word! -->
-    <div class="text">
-      Hello my dearest Madhu,
-      <br/><br/>
-      I want you to know that I am always by your side, supporting you in every step of your journey, and I love you.
-    </div>
-    <!-- Repeat for 39 more times -->
+  <input type="checkbox" id="toggleText" />
+  <div>
+    <h1>Hello my dearest Madhu,<br/><br/>I want you to know that I am always by your side, supporting you in every step of your journey, and I love you.</h1>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var ui = document.getElementById("ui");
-
-      // Repeat text 39 more times
-      for (var i = 0; i < 39; i++) {
-        var newText = document.createElement("div");
-        newText.className = "text";
-        newText.innerText = "Hello my dearest Madhu,\n\nI want you to know that I am always by your side, supporting you in every step of your journey, and I love you.";
-        ui.appendChild(newText);
-      }
+    document.getElementById('toggleText').addEventListener('change', function () {
+      document.querySelector('div h1').classList.toggle('active', this.checked);
     });
   </script>
 </body>
